@@ -1,0 +1,19 @@
+{
+  "name": "adventofcode2023",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "solve": "tsc && node build/solve.js",
+    "fmt": "prettier --write ."
+  },
+  "author": "Rachael Booth",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.1",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "commander": "^11.1.0"
+  }
+}
