@@ -1,12 +1,11 @@
 import { Command } from "commander";
-import { Solver } from "./solver";
 
 const program = new Command();
 
 program
   .option("-d, --day <number>", "Day", new Date().getDate().toString())
   .option("-o, --part-one")
-  .option("-i, --input-file", "Input file name");
+  .option("-i, --input-file <string>", "Input file name");
 
 program.parse(process.argv);
 const options = program.opts();
@@ -19,7 +18,7 @@ async function getAnswer(
   inputFile: string,
 ): Promise<void> {
   const fileLocation = `./day${day}`;
-  const solver = (await import(fileLocation)) as Solver;
+  const solver = await import(fileLocation);
   const inputFileName = inputFile ?? `day${day}`;
   const answer = part1
     ? await solver.solve1(inputFileName)
