@@ -1,5 +1,6 @@
 import * as _ from "lodash";
 import { readAsLines } from "./inputParser";
+import { Dictionary } from "./dictionary";
 
 type card = {
   id: number;
@@ -52,16 +53,14 @@ export async function solve1(inputFileName: string): Promise<number> {
 export async function solve2(inputFileName: string): Promise<number> {
   const cards = await parseCards(inputFileName);
   // Conveniently, cards are in order
-  let counts = {};
+  let counts = new Dictionary(1);
   let total = 0;
   for (let card of cards) {
     const p = countWins(card);
-    const instances = counts[card.id] || 1;
+    const instances = counts.get(card.id);
     let i = 1;
     while (i <= p) {
-      const c = card.id + i;
-      const ci = counts[c] || 1;
-      counts[c] = ci + instances;
+      counts.update(card.id + i, (c) => c + instances);
       i++;
     }
     total = total + instances;
