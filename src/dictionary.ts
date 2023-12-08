@@ -30,7 +30,7 @@ export class Dictionary<T> {
   }
 }
 
-export class ListDictionary<T> extends Dictionary<T[]>{
+export class ListDictionary<T> extends Dictionary<T[]> {
   public constructor() {
     super([]);
   }
@@ -46,11 +46,17 @@ export class ListDictionary<T> extends Dictionary<T[]>{
     return this.get(key).includes(value);
   }
 
-  public includesWhere(key: string | number, matchFunction: (value: T) => boolean): boolean {
-    return this.get(key).some(v => matchFunction(v));
+  public includesWhere(
+    key: string | number,
+    matchFunction: (value: T) => boolean,
+  ): boolean {
+    return this.get(key).some((v) => matchFunction(v));
   }
 
-  public valuesWhere(key: string | number, matchFunction: (value: T) => boolean): T[] {
-    return this.get(key).filter(v => matchFunction(v));
+  public valuesWhere(
+    key: string | number,
+    matchFunction: (value: T) => boolean,
+  ): T[] {
+    return this.get(key).filter((v) => matchFunction(v));
   }
 }
