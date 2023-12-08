@@ -7,7 +7,7 @@ type map = {
   diff: number;
 };
 
-type range = { min: number, max: number };
+type range = { min: number; max: number };
 
 type almanac = {
   initialSeeds: number[];
@@ -43,7 +43,10 @@ async function readAlmanac(inputFileName: string): Promise<almanac> {
       almanac.initialSeeds = _.tail(s).map((seed) => parseInt(seed));
       let j = 0;
       while (j < almanac.initialSeeds.length - 1) {
-        const range = { min: almanac.initialSeeds[j], max: almanac.initialSeeds[j] + almanac.initialSeeds[j + 1] - 1 };
+        const range = {
+          min: almanac.initialSeeds[j],
+          max: almanac.initialSeeds[j] + almanac.initialSeeds[j + 1] - 1,
+        };
         almanac.rangeSeeds.push(range);
         j = j + 2;
       }
@@ -75,6 +78,37 @@ async function readAlmanac(inputFileName: string): Promise<almanac> {
   return almanac;
 }
 
+function mapRangeForwards(r: range, maps: map[]): range[] {
+  let unmappedSections = [r];
+  let result = [];
+  for (const map of maps) {
+    let newUnmappedSections = [];
+    for (const section of unmappedSections) {
+      const overlap = {
+        min: Math.max(map.source.min, section.min),
+        max: Math.min(map.source.max, section.max),
+      };
+      if (overlap.min <= overlap.max) {
+        // i.e. there is actual overlap
+        result.push({
+          min: overlap.min + map.diff,
+          max: overlap.max + map.diff,
+        });
+        if (section.min < overlap.min) {
+          newUnmappedSections.push({ min: section.min, max: overlap.min - 1 });
+        }
+        if (section.max > overlap.max) {
+          newUnmappedSections.push({ min: overlap.max + 1, max: section.max });
+        }
+      } else {
+        newUnmappedSections.push(section);
+      }
+    }
+    unmappedSections = newUnmappedSections;
+  }
+  return result.concat(...unmappedSections);
+}
+
 function mapForwards(s: number, maps: map[]): number {
   // Assume max one of these
   const relevantMap = _.find(
@@ -92,8 +126,11 @@ function mapBackwards(d: number, maps: map[]): number[] {
     maps,
     (m) => m.destination.min <= d && m.destination.max >= d,
   );
-  const results = relevantMaps.map(m => d - m.diff);
-  const alsoDefaultSource = _.every(maps, m => m.source.min > d || m.source.max < d);
+  const results = relevantMaps.map((m) => d - m.diff);
+  const alsoDefaultSource = _.every(
+    maps,
+    (m) => m.source.min > d || m.source.max < d,
+  );
   if (alsoDefaultSource) {
     results.push(d);
   }
@@ -101,23 +138,23 @@ function mapBackwards(d: number, maps: map[]): number[] {
 }
 
 function mapLocationToSeeds(l: number, almanac: almanac): number[] {
-    const maps = [
-        almanac.seedToSoil,
-        almanac.soilToFertilizer,
-        almanac.fertilizerToWater,
-        almanac.waterToLight,
-        almanac.lightToTemperature,
-        almanac.temeratureToHumidity,
-        almanac.humidityToLocation,
-      ];
-      let i = maps.length - 1;
-      let values = [l];
-      while (i >= 0) {
-        const mapSet = maps[i];
-        values = values.flatMap(v => mapBackwards(v, mapSet));
-        i--;
-      }
-      return values;
+  const maps = [
+    almanac.seedToSoil,
+    almanac.soilToFertilizer,
+    almanac.fertilizerToWater,
+    almanac.waterToLight,
+    almanac.lightToTemperature,
+    almanac.temeratureToHumidity,
+    almanac.humidityToLocation,
+  ];
+  let i = maps.length - 1;
+  let values = [l];
+  while (i >= 0) {
+    const mapSet = maps[i];
+    values = values.flatMap((v) => mapBackwards(v, mapSet));
+    i--;
+  }
+  return values;
 }
 
 function mapSeedToLocation(seed: number, almanac: almanac): number {
@@ -139,21 +176,26 @@ function mapSeedToLocation(seed: number, almanac: almanac): number {
 
 export async function solve1(inputFileName: string): Promise<number> {
   const almanac = await readAlmanac(inputFileName);
-  const locationsFromInitialSeeds = almanac.initialSeeds.map(s => mapSeedToLocation(s, almanac));
+  const locationsFromInitialSeeds = almanac.initialSeeds.map((s) =>
+    mapSeedToLocation(s, almanac),
+  );
   return Math.min(...locationsFromInitialSeeds);
 }
 
 export async function solve2(inputFileName: string): Promise<number> {
-    // Feel like I should combine maps and do something clever, but this worked so :shrug:
-    const almanac = await readAlmanac(inputFileName);
-    let l = 0;
-    // Actually this might not still be in the list, but lets hope for now
-    while (l <= 424490994) {
-        const seeds = mapLocationToSeeds(l, almanac);
-        if (_.some(seeds, s => _.some(almanac.rangeSeeds, r => r.min <= s && r.max >= s))) {
-            return l;
-        }
-        l++;
-    }
-    return -1;
+  const almanac = await readAlmanac(inputFileName);
+  const maps = [
+    almanac.seedToSoil,
+    almanac.soilToFertilizer,
+    almanac.fertilizerToWater,
+    almanac.waterToLight,
+    almanac.lightToTemperature,
+    almanac.temeratureToHumidity,
+    almanac.humidityToLocation,
+  ];
+  let ranges = almanac.rangeSeeds;
+  for (let mapSet of maps) {
+    ranges = ranges.flatMap((range) => mapRangeForwards(range, mapSet));
+  }
+  return Math.min(...ranges.map((r) => r.min));
 }
