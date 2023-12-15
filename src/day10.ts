@@ -5,9 +5,7 @@ function locationToString(x: number, y: number): string {
   return `${x},${y}`;
 }
 
-async function readPipes(
-  inputFileName: string,
-): Promise<{
+async function readPipes(inputFileName: string): Promise<{
   S: string;
   pipes: Dictionary<{ links: string[]; type: string }>;
   maxX;
