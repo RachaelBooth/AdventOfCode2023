@@ -17,5 +17,8 @@
   "dependencies": {
     "commander": "^11.1.0",
     "lodash": "^4.17.21"
+  },
+  "prettier": {
+    "printWidth": 100
   }
 }

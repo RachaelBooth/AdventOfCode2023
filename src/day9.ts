@@ -31,17 +31,11 @@ async function readSequences(inputFileName: string): Promise<number[][]> {
 
 export async function solve1(inputFileName: string): Promise<number> {
   const sequences = await readSequences(inputFileName);
-  return sequences.reduce(
-    (curr, next) => curr + findNextSequenceElement(next),
-    0,
-  );
+  return sequences.reduce((curr, next) => curr + findNextSequenceElement(next), 0);
 }
 
 export async function solve2(inputFileName: string): Promise<number> {
   const sequences = await readSequences(inputFileName);
   // Well that was not what I thought the second half would be!
-  return sequences.reduce(
-    (curr, next) => curr + findNextSequenceElement(next.reverse()),
-    0,
-  );
+  return sequences.reduce((curr, next) => curr + findNextSequenceElement(next.reverse()), 0);
 }

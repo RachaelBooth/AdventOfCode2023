@@ -33,9 +33,7 @@ async function readMap(inputFileName: string): Promise<map> {
     }
     y++;
   }
-  const emptyColumns = _.range(x).filter(
-    (c) => !galaxies.some((g) => g.x == c),
-  );
+  const emptyColumns = _.range(x).filter((c) => !galaxies.some((g) => g.x == c));
   return { galaxies, emptyRows, emptyColumns };
 }
 
@@ -52,10 +50,7 @@ function findShortestPathDistance(
   const emptyColumnsCrossed = map.emptyColumns.filter(
     (x) => x > Math.min(start.x, end.x) && x < Math.max(start.x, end.x),
   ).length;
-  return (
-    baseDistance +
-    (emptynessWeight - 1) * (emptyRowsCrossed + emptyColumnsCrossed)
-  );
+  return baseDistance + (emptynessWeight - 1) * (emptyRowsCrossed + emptyColumnsCrossed);
 }
 
 function sumShortestGalaxyDistances(map: map, emptynessWeight: number) {
@@ -64,12 +59,7 @@ function sumShortestGalaxyDistances(map: map, emptynessWeight: number) {
   while (g < map.galaxies.length - 1) {
     let h = g + 1;
     while (h < map.galaxies.length) {
-      const path = findShortestPathDistance(
-        map,
-        map.galaxies[g],
-        map.galaxies[h],
-        emptynessWeight,
-      );
+      const path = findShortestPathDistance(map, map.galaxies[g], map.galaxies[h], emptynessWeight);
       sum = sum + path;
       h++;
     }

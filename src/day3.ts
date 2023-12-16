@@ -22,10 +22,7 @@ type schematic = {
   symbols: symbolWithLocation[];
 };
 
-function isPartNumber(
-  number: numberWithLocation,
-  schematic: schematic,
-): boolean {
+function isPartNumber(number: numberWithLocation, schematic: schematic): boolean {
   return _.some(
     schematic.symbols,
     (s) =>
@@ -66,9 +63,7 @@ async function readSchematic(inputFileName: string): Promise<schematic> {
 
 export async function solve1(inputFileName: string): Promise<number> {
   const schematic = await readSchematic(inputFileName);
-  const partNumbers = schematic.numbers.filter((n) =>
-    isPartNumber(n, schematic),
-  );
+  const partNumbers = schematic.numbers.filter((n) => isPartNumber(n, schematic));
   return _.sumBy(partNumbers, (n) => n.value);
 }
 

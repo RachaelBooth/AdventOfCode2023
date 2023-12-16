@@ -1,10 +1,7 @@
 import { Dictionary, ListDictionary } from "./dictionary";
 import { readAsLines } from "./inputParser";
 import * as _ from "lodash";
-import {
-  normaliseCongruence,
-  reduceModularEquations,
-} from "./modularArithmetic";
+import { normaliseCongruence, reduceModularEquations } from "./modularArithmetic";
 
 type nodeNeighbours = {
   left: string;
@@ -69,10 +66,7 @@ function stepsNeededWithLoopLength(
     if (seen.includesWhere(current, (s) => s % instructions.length == i)) {
       // Completed a loop
       // Expect this to be length 1
-      const previous = seen.valuesWhere(
-        current,
-        (s) => s % instructions.length == i,
-      )[0];
+      const previous = seen.valuesWhere(current, (s) => s % instructions.length == i)[0];
       const loopLength = steps - previous;
 
       // N.B. Either this must already have seen the end at the end of the instructions or it never will
@@ -110,13 +104,9 @@ export async function solve2(inputFileName: string): Promise<number> {
   const maps = await parseInput(inputFileName);
   const { network } = maps;
   const starts = network.keys().filter((k) => k.toString().endsWith("A"));
-  const stepsToEnds = starts.map((s) =>
-    stepsNeededWithLoopLength(s.toString(), maps),
-  );
+  const stepsToEnds = starts.map((s) => stepsNeededWithLoopLength(s.toString(), maps));
   const congruence = reduceModularEquations(
-    ...stepsToEnds.map((s) =>
-      normaliseCongruence({ value: s.steps, modulus: s.loopLength }),
-    ),
+    ...stepsToEnds.map((s) => normaliseCongruence({ value: s.steps, modulus: s.loopLength })),
   );
   let result = congruence.value;
   // To check each has actually reached the loop

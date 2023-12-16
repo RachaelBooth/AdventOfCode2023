@@ -12,9 +12,7 @@ function parseRow(line: string): conditionRecordRow {
   return { row, groupSizes };
 }
 
-async function readConditionRecords(
-  inputFileName: string,
-): Promise<conditionRecordRow[]> {
+async function readConditionRecords(inputFileName: string): Promise<conditionRecordRow[]> {
   const lines = await readAsLines(inputFileName);
   return lines.map(parseRow);
 }
@@ -24,8 +22,7 @@ function countPossibleArrangements(rowRecord: conditionRecordRow): number {
   const groupSizes = `,${rowRecord.groupSizes}`;
   let i = 0;
   while (i < rowRecord.row.length) {
-    const nextSpring =
-      rowRecord.row[i] == "?" ? [".", "#"] : [rowRecord.row[i]];
+    const nextSpring = rowRecord.row[i] == "?" ? [".", "#"] : [rowRecord.row[i]];
     const next = {};
     for (let a of arrangements) {
       for (let n of nextSpring) {
@@ -75,10 +72,7 @@ function countPossibleArrangements(rowRecord: conditionRecordRow): number {
 
 export async function solve1(inputFileName: string): Promise<number> {
   const conditionRecords = await readConditionRecords(inputFileName);
-  return conditionRecords.reduce(
-    (curr, next) => curr + countPossibleArrangements(next),
-    0,
-  );
+  return conditionRecords.reduce((curr, next) => curr + countPossibleArrangements(next), 0);
 }
 
 export async function solve2(inputFileName: string): Promise<number> {
@@ -92,8 +86,5 @@ export async function solve2(inputFileName: string): Promise<number> {
       .concat(cr.groupSizes)
       .concat(cr.groupSizes),
   }));
-  return expanded.reduce(
-    (curr, next) => curr + countPossibleArrangements(next),
-    0,
-  );
+  return expanded.reduce((curr, next) => curr + countPossibleArrangements(next), 0);
 }

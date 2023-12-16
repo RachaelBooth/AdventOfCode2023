@@ -12,11 +12,7 @@ async function readGrid(inputFileName: string): Promise<string[][]> {
   return lines.map((line) => line.split(""));
 }
 
-function positionAsString(position: {
-  x: number;
-  y: number;
-  direction: Direction;
-}): string {
+function positionAsString(position: { x: number; y: number; direction: Direction }): string {
   return `${position.x},${position.y}`;
 }
 
@@ -28,11 +24,10 @@ function positionAndDirectionAsString(position: {
   return `${position.x},${position.y}:${position.direction}`;
 }
 
-function positionOnlyAfterStep(position: {
+function positionOnlyAfterStep(position: { x: number; y: number; direction: Direction }): {
   x: number;
   y: number;
-  direction: Direction;
-}): { x: number; y: number } {
+} {
   switch (position.direction) {
     case Direction.Right:
       return { x: position.x + 1, y: position.y };
@@ -45,10 +40,7 @@ function positionOnlyAfterStep(position: {
   }
 }
 
-function directionAfterMirror(
-  currentDirection: Direction,
-  mirror: string,
-): Direction {
+function directionAfterMirror(currentDirection: Direction, mirror: string): Direction {
   switch (currentDirection) {
     case Direction.Right:
       return mirror == "/" ? Direction.Up : Direction.Down;
@@ -61,27 +53,16 @@ function directionAfterMirror(
   }
 }
 
-function directionsAfterSplitter(
-  currentDirection: Direction,
-  splitter: string,
-): Direction[] {
+function directionsAfterSplitter(currentDirection: Direction, splitter: string): Direction[] {
   switch (currentDirection) {
     case Direction.Right:
-      return splitter == "-"
-        ? [Direction.Right]
-        : [Direction.Up, Direction.Down];
+      return splitter == "-" ? [Direction.Right] : [Direction.Up, Direction.Down];
     case Direction.Left:
-      return splitter == "-"
-        ? [Direction.Left]
-        : [Direction.Up, Direction.Down];
+      return splitter == "-" ? [Direction.Left] : [Direction.Up, Direction.Down];
     case Direction.Down:
-      return splitter == "-"
-        ? [Direction.Left, Direction.Right]
-        : [Direction.Down];
+      return splitter == "-" ? [Direction.Left, Direction.Right] : [Direction.Down];
     case Direction.Up:
-      return splitter == "-"
-        ? [Direction.Left, Direction.Right]
-        : [Direction.Up];
+      return splitter == "-" ? [Direction.Left, Direction.Right] : [Direction.Up];
   }
 }
 
@@ -135,17 +116,14 @@ function adjustedStartingPositions(
     return [
       {
         ...startingPosition,
-        direction: directionAfterMirror(
-          startingPosition.direction,
-          startingEncounter,
-        ),
+        direction: directionAfterMirror(startingPosition.direction, startingEncounter),
       },
     ];
   } else if (isSplitter(startingEncounter)) {
-    return directionsAfterSplitter(
-      startingPosition.direction,
-      startingEncounter,
-    ).map((d) => ({ ...startingPosition, direction: d }));
+    return directionsAfterSplitter(startingPosition.direction, startingEncounter).map((d) => ({
+      ...startingPosition,
+      direction: d,
+    }));
   } else {
     return [{ ...startingPosition }];
   }

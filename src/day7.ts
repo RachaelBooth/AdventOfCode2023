@@ -37,11 +37,7 @@ function cardToNumber(card: string, useJokers: boolean = false): number {
   return parseInt(card);
 }
 
-function compare(
-  current: hand,
-  comparator: hand,
-  useJokers: boolean = false,
-): number {
+function compare(current: hand, comparator: hand, useJokers: boolean = false): number {
   if (current.type != comparator.type) {
     return current.type - comparator.type;
   }
@@ -49,10 +45,7 @@ function compare(
   let i = 0;
   while (i < current.hand.length) {
     if (current.hand[i] != comparator.hand[i]) {
-      return (
-        cardToNumber(current.hand[i], useJokers) -
-        cardToNumber(comparator.hand[i], useJokers)
-      );
+      return cardToNumber(current.hand[i], useJokers) - cardToNumber(comparator.hand[i], useJokers);
     }
     i++;
   }
@@ -103,10 +96,7 @@ function parseHand(line: string, useJokers: boolean = false): hand {
   };
 }
 
-async function readHands(
-  inputFileName: string,
-  useJokers: boolean = false,
-): Promise<hand[]> {
+async function readHands(inputFileName: string, useJokers: boolean = false): Promise<hand[]> {
   const lines = await readAsLines(inputFileName);
   return lines.map((line) => parseHand(line, useJokers));
 }

@@ -13,11 +13,7 @@ type game = {
 };
 
 function includes(set: cubeSet, subset: cubeSet): boolean {
-  return (
-    set.red >= subset.red &&
-    set.green >= subset.green &&
-    set.blue >= subset.blue
-  );
+  return set.red >= subset.red && set.green >= subset.green && set.blue >= subset.blue;
 }
 
 function isPossible(game: game, bag: cubeSet): boolean {

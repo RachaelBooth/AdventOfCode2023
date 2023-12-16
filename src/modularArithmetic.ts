@@ -19,10 +19,7 @@ export function lcm(a: number, b: number): number {
 }
 
 // gcd = sa + tb
-function bezoutCoefficients(
-  a: number,
-  b: number,
-): { gcd: number; s: number; t: number } {
+function bezoutCoefficients(a: number, b: number): { gcd: number; s: number; t: number } {
   if (a < b) {
     var flipped = bezoutCoefficients(b, a);
     return { gcd: flipped.gcd, s: flipped.t, t: flipped.s };
@@ -47,9 +44,7 @@ function bezoutCoefficients(
   }
 }
 
-export function reduceModularEquations(
-  ...congruences: congruence[]
-): congruence {
+export function reduceModularEquations(...congruences: congruence[]): congruence {
   return _.reduce(congruences, (c, next) => reduceModularEquationPair(c, next));
 }
 
@@ -61,10 +56,7 @@ export function normaliseCongruence(congruence: congruence): congruence {
   return { value: v % congruence.modulus, modulus: congruence.modulus };
 }
 
-export function reduceModularEquationPair(
-  first: congruence,
-  second: congruence,
-) {
+export function reduceModularEquationPair(first: congruence, second: congruence) {
   const bezout = bezoutCoefficients(first.modulus, second.modulus);
   if (bezout.gcd != 1 && (first.value - second.value) % bezout.gcd != 0) {
     console.log("GCD != 1 and values are incompatible - no solution");
@@ -82,11 +74,7 @@ export function reduceModularEquationPair(
 
 export function multiplyMod(modulus: number, ...values: number[]): number {
   if (values.length > 2) {
-    return _.reduce(
-      values,
-      (c, next) => multiplyMod(modulus, c, next),
-      values[0] % modulus,
-    );
+    return _.reduce(values, (c, next) => multiplyMod(modulus, c, next), values[0] % modulus);
   }
 
   if (values.length == 1) {

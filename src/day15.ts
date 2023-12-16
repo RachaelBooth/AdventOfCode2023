@@ -75,8 +75,7 @@ export async function solve2(inputFileName: string): Promise<number> {
   for (const key of boxKeys) {
     let i = 0;
     while (i < boxes[key].length) {
-      focusingPower =
-        focusingPower + (key + 1) * (i + 1) * boxes[key][i].focalLength;
+      focusingPower = focusingPower + (key + 1) * (i + 1) * boxes[key][i].focalLength;
       i++;
     }
   }

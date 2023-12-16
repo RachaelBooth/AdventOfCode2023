@@ -113,9 +113,7 @@ export async function solve1(inputFileName: string): Promise<number> {
   const linesOfReflection = patterns.flatMap((p) => findReflections(p, 0));
   return linesOfReflection.reduce(
     (curr, next) =>
-      next.type == "horizontal"
-        ? curr + 100 * (next.afterIndex + 1)
-        : curr + (next.afterIndex + 1),
+      next.type == "horizontal" ? curr + 100 * (next.afterIndex + 1) : curr + (next.afterIndex + 1),
     0,
   );
 }
@@ -125,9 +123,7 @@ export async function solve2(inputFileName: string): Promise<number> {
   const linesOfReflection = patterns.flatMap((p) => findReflections(p, 1));
   return linesOfReflection.reduce(
     (curr, next) =>
-      next.type == "horizontal"
-        ? curr + 100 * (next.afterIndex + 1)
-        : curr + (next.afterIndex + 1),
+      next.type == "horizontal" ? curr + 100 * (next.afterIndex + 1) : curr + (next.afterIndex + 1),
     0,
   );
 }

@@ -79,12 +79,8 @@ export async function solve1(inputFileName: string): Promise<number> {
   // Assuming this is going to be a unique point, should check for crossover
   while (a[a.length - 1] != b[b.length - 1]) {
     // Instructions do say there should always be exactly two neighbours for these
-    a.push(
-      pipes.get(a[a.length - 1]).links.filter((l) => l != a[a.length - 2])[0],
-    );
-    b.push(
-      pipes.get(b[b.length - 1]).links.filter((l) => l != b[b.length - 2])[0],
-    );
+    a.push(pipes.get(a[a.length - 1]).links.filter((l) => l != a[a.length - 2])[0]);
+    b.push(pipes.get(b[b.length - 1]).links.filter((l) => l != b[b.length - 2])[0]);
   }
   return a.length - 1;
 }
@@ -93,11 +89,7 @@ export async function solve2(inputFileName: string): Promise<number> {
   const { S, pipes, maxX, maxY } = await readPipes(inputFileName);
   let loop = [S, pipes.get(S).links[0]];
   while (loop[loop.length - 1] != S) {
-    loop.push(
-      pipes
-        .get(loop[loop.length - 1])
-        .links.filter((l) => l != loop[loop.length - 2])[0],
-    );
+    loop.push(pipes.get(loop[loop.length - 1]).links.filter((l) => l != loop[loop.length - 2])[0]);
   }
   let insideLoop = false;
   let up = false;

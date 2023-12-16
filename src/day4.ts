@@ -31,9 +31,7 @@ async function parseCards(inputFileName: string): Promise<card[]> {
 }
 
 function calculatePoints(card: card): number {
-  const count = _.filter(card.numbers, (n) =>
-    _.includes(card.winningNumbers, n),
-  ).length;
+  const count = _.filter(card.numbers, (n) => _.includes(card.winningNumbers, n)).length;
   if (count == 0) {
     return 0;
   }
@@ -41,8 +39,7 @@ function calculatePoints(card: card): number {
 }
 
 function countWins(card: card): number {
-  return _.filter(card.numbers, (n) => _.includes(card.winningNumbers, n))
-    .length;
+  return _.filter(card.numbers, (n) => _.includes(card.winningNumbers, n)).length;
 }
 
 export async function solve1(inputFileName: string): Promise<number> {

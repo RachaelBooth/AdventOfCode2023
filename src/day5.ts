@@ -111,10 +111,7 @@ function mapRangeForwards(r: range, maps: map[]): range[] {
 
 function mapForwards(s: number, maps: map[]): number {
   // Assume max one of these
-  const relevantMap = _.find(
-    maps,
-    (m) => m.source.min <= s && m.source.max >= s,
-  );
+  const relevantMap = _.find(maps, (m) => m.source.min <= s && m.source.max >= s);
   if (!relevantMap) {
     return s;
   }
@@ -122,15 +119,9 @@ function mapForwards(s: number, maps: map[]): number {
 }
 
 function mapBackwards(d: number, maps: map[]): number[] {
-  const relevantMaps = _.filter(
-    maps,
-    (m) => m.destination.min <= d && m.destination.max >= d,
-  );
+  const relevantMaps = _.filter(maps, (m) => m.destination.min <= d && m.destination.max >= d);
   const results = relevantMaps.map((m) => d - m.diff);
-  const alsoDefaultSource = _.every(
-    maps,
-    (m) => m.source.min > d || m.source.max < d,
-  );
+  const alsoDefaultSource = _.every(maps, (m) => m.source.min > d || m.source.max < d);
   if (alsoDefaultSource) {
     results.push(d);
   }
@@ -176,9 +167,7 @@ function mapSeedToLocation(seed: number, almanac: almanac): number {
 
 export async function solve1(inputFileName: string): Promise<number> {
   const almanac = await readAlmanac(inputFileName);
-  const locationsFromInitialSeeds = almanac.initialSeeds.map((s) =>
-    mapSeedToLocation(s, almanac),
-  );
+  const locationsFromInitialSeeds = almanac.initialSeeds.map((s) => mapSeedToLocation(s, almanac));
   return Math.min(...locationsFromInitialSeeds);
 }
 
