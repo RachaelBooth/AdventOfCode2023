@@ -15,6 +15,10 @@ export class Dictionary<T> {
     return _.keys(this.values);
   }
 
+  public vals(): T[] {
+    return _.values(this.values);
+  }
+
   public set(key: string | number, value: T): void {
     this.values[key] = value;
   }
