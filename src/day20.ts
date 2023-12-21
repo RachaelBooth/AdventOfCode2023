@@ -57,7 +57,7 @@ class ConjunctionModule implements Module {
 
   public addInput(input: string): void {
     if (this.memory.get(input) == undefined) {
-        this.memory.set(input, Pulse.Low);
+      this.memory.set(input, Pulse.Low);
     }
   }
 
@@ -68,7 +68,7 @@ class ConjunctionModule implements Module {
   public recieve(pulse: Pulse, from: string): Pulse | null {
     this.memory.set(from, pulse);
     if (this.memory.vals().every((v) => v == Pulse.High)) {
-        this.lastSent = Pulse.Low;
+      this.lastSent = Pulse.Low;
       return Pulse.Low;
     }
     this.lastSent = Pulse.High;
@@ -222,9 +222,9 @@ async function readModules(inputFileName: string): Promise<void> {
   for (const conjunctionModule of conjunctionModules) {
     const module = modules.get(conjunctionModule) as ConjunctionModule;
     for (const m of modules.vals()) {
-        if (m.destinations.includes(conjunctionModule)) {
-            module.addInput(m.name);
-        }
+      if (m.destinations.includes(conjunctionModule)) {
+        module.addInput(m.name);
+      }
     }
   }
 
@@ -238,10 +238,10 @@ export async function solve1(inputFileName: string): Promise<number> {
 }
 
 export async function solve2(inputFileName: string): Promise<number> {
-    // I eventually had to inspect the input and found the numbers by hand
-    const a = parseInt("111110101101", 2);
-    const b = parseInt("111100110001", 2);
-    const c = parseInt("111101001101", 2);
-    const d = parseInt("111010111001", 2);
-    return lcm(lcm(a, b), lcm(c, d));
+  // I eventually had to inspect the input and found the numbers by hand
+  const a = parseInt("111110101101", 2);
+  const b = parseInt("111100110001", 2);
+  const c = parseInt("111101001101", 2);
+  const d = parseInt("111010111001", 2);
+  return lcm(lcm(a, b), lcm(c, d));
 }
