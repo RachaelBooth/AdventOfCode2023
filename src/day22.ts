@@ -57,7 +57,7 @@ async function readBricks(inputFileName: string): Promise<brick[]> {
       x: start.x == end.x ? 0 : 1,
       y: start.y == end.y ? 0 : 1,
       z: start.z == end.z ? 0 : 1,
-    };    
+    };
     const length = end.x - start.x + end.y - start.y + end.z - start.z;
     const ref = `${c}`;
     c++;
@@ -226,7 +226,6 @@ export async function solve2(inputFileName: string): Promise<number> {
       newFalling = nextNew;
     }
     totalFalls = totalFalls + falling.size - 1;
-
   }
   return totalFalls;
 }
